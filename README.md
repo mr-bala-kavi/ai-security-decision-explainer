@@ -45,7 +45,7 @@ The system uses a 6-layer architecture:
 
 ```bash
 # Clone the repository
-git clone <repository-url>
+git clone https://github.com/mr-bala-kavi/ai-security-decision-explainer.git
 cd ai-security-decision-explainer
 
 # Create virtual environment
