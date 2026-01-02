@@ -5,25 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Security Decision Explainer - SOC Dashboard</title>
     <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+    <div class="animated-background">
+        <div class="cyber-grid"></div>
+    </div>
+
     <div class="container">
         <!-- Header -->
-        <header>
+        <header class="glass-card">
+            <div class="header-icon">
+                <i class="fas fa-shield-halved"></i>
+            </div>
             <h1>AI Security Decision Explainer</h1>
-            <p class="subtitle">Trust-First AI for SOC Environments</p>
+            <p class="subtitle"><i class="fas fa-lock"></i> Trust-First AI for SOC Environments</p>
         </header>
 
         <!-- Alert Selection -->
-        <section class="selection-panel">
+        <section class="selection-panel glass-card">
+            <div class="section-header">
+                <i class="fas fa-search"></i>
+                <h3>Alert Selection</h3>
+            </div>
             <div class="form-group">
-                <label for="alertSelect">Select Security Alert:</label>
+                <label for="alertSelect"><i class="fas fa-bell"></i> Select Security Alert:</label>
                 <select id="alertSelect" class="form-control">
                     <option value="">Loading alerts...</option>
                 </select>
-                <button id="analyzeBtn" class="btn btn-primary" disabled>Analyze Alert</button>
-                <span id="loadingSpinner" class="spinner" style="display: none;">Analyzing...</span>
+                <button id="analyzeBtn" class="btn btn-primary" disabled>
+                    <i class="fas fa-brain"></i> Analyze Alert
+                </button>
+                <span id="loadingSpinner" class="spinner" style="display: none;">
+                    <i class="fas fa-spinner fa-spin"></i> Analyzing...
+                </span>
             </div>
         </section>
 
@@ -31,39 +47,45 @@
         <div id="resultsPanel" style="display: none;">
 
             <!-- Alert Overview -->
-            <section class="card">
-                <h2>Alert Overview</h2>
+            <section class="card glass-card fade-in">
+                <div class="card-header">
+                    <i class="fas fa-info-circle"></i>
+                    <h2>Alert Overview</h2>
+                </div>
                 <div class="info-grid">
                     <div class="info-item">
-                        <span class="label">Alert ID:</span>
+                        <span class="label"><i class="fas fa-hashtag"></i> Alert ID:</span>
                         <span id="alertId" class="value"></span>
                     </div>
                     <div class="info-item">
-                        <span class="label">Timestamp:</span>
+                        <span class="label"><i class="fas fa-clock"></i> Timestamp:</span>
                         <span id="alertTimestamp" class="value"></span>
                     </div>
                     <div class="info-item">
-                        <span class="label">Source IP:</span>
+                        <span class="label"><i class="fas fa-network-wired"></i> Source IP:</span>
                         <span id="sourceIp" class="value"></span>
                     </div>
                     <div class="info-item">
-                        <span class="label">Source Country:</span>
+                        <span class="label"><i class="fas fa-globe"></i> Source Country:</span>
                         <span id="sourceCountry" class="value"></span>
                     </div>
                     <div class="info-item">
-                        <span class="label">Destination:</span>
+                        <span class="label"><i class="fas fa-bullseye"></i> Destination:</span>
                         <span id="destination" class="value"></span>
                     </div>
                     <div class="info-item">
-                        <span class="label">Protocol:</span>
+                        <span class="label"><i class="fas fa-ethernet"></i> Protocol:</span>
                         <span id="protocol" class="value"></span>
                     </div>
                 </div>
             </section>
 
             <!-- AI Verdict -->
-            <section class="card verdict-card">
-                <h2>AI Security Verdict</h2>
+            <section class="card verdict-card glass-card fade-in">
+                <div class="card-header">
+                    <i class="fas fa-gavel"></i>
+                    <h2>AI Security Verdict</h2>
+                </div>
                 <div class="verdict-container">
                     <div id="verdictBadge" class="verdict-badge"></div>
                     <div class="confidence-container">
@@ -91,8 +113,11 @@
             </section>
 
             <!-- Explanation -->
-            <section class="card explanation-card">
-                <h2>Security Analyst Explanation</h2>
+            <section class="card explanation-card glass-card fade-in">
+                <div class="card-header">
+                    <i class="fas fa-comment-dots"></i>
+                    <h2>Security Analyst Explanation</h2>
+                </div>
                 <div id="explanationText" class="explanation-text"></div>
                 <div class="action-recommendation">
                     <strong>Recommended Action:</strong>
@@ -101,15 +126,21 @@
             </section>
 
             <!-- Evidence - Feature Importance -->
-            <section class="card">
-                <h2>Evidence - Feature Importance</h2>
+            <section class="card glass-card fade-in">
+                <div class="card-header">
+                    <i class="fas fa-chart-bar"></i>
+                    <h2>Evidence - Feature Importance</h2>
+                </div>
                 <p class="help-text">Top factors contributing to this decision (via SHAP analysis):</p>
                 <canvas id="featureChart"></canvas>
             </section>
 
             <!-- Detailed Features (Expandable) -->
-            <section class="card">
-                <h2>Detailed Alert Features</h2>
+            <section class="card glass-card fade-in">
+                <div class="card-header">
+                    <i class="fas fa-list-ul"></i>
+                    <h2>Detailed Alert Features</h2>
+                </div>
                 <button id="toggleDetails" class="btn btn-secondary">Show All Details</button>
                 <div id="detailsTable" style="display: none;">
                     <table class="details-table">
@@ -128,14 +159,30 @@
             </section>
 
             <!-- True Label (For Validation) -->
-            <section class="card validation-card">
-                <h3>Validation</h3>
+            <section class="card validation-card glass-card fade-in">
+                <div class="card-header">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>Validation</h3>
+                </div>
                 <p class="help-text">This is synthetic data. The true label is:</p>
                 <div id="trueLabel" class="true-label-badge"></div>
             </section>
 
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-icon">
+                <i class="fas fa-code"></i>
+            </div>
+            <p>Created by <strong>Kavi</strong></p>
+            <div class="footer-links">
+                <i class="fas fa-heart"></i>
+            </div>
+        </div>
+    </footer>
 
     <script src="/static/js/dashboard.js"></script>
 </body>

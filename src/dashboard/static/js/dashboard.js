@@ -6,7 +6,17 @@ let featureChart = null;
 document.addEventListener('DOMContentLoaded', function() {
     loadAlerts();
     setupEventListeners();
+    initAnimations();
 });
+
+// Initialize animations and effects
+function initAnimations() {
+    // Add staggered animation to cards
+    const cards = document.querySelectorAll('.glass-card');
+    cards.forEach((card, index) => {
+        card.style.animationDelay = `${index * 0.1}s`;
+    });
+}
 
 function setupEventListeners() {
     document.getElementById('analyzeBtn').addEventListener('click', analyzeAlert);
@@ -74,8 +84,15 @@ async function analyzeAlert() {
 }
 
 function displayResults(data) {
-    // Show results panel
-    document.getElementById('resultsPanel').style.display = 'block';
+    // Show results panel with fade-in effect
+    const resultsPanel = document.getElementById('resultsPanel');
+    resultsPanel.style.display = 'block';
+    resultsPanel.style.opacity = '0';
+
+    setTimeout(() => {
+        resultsPanel.style.transition = 'opacity 0.5s ease-in';
+        resultsPanel.style.opacity = '1';
+    }, 50);
 
     // Alert Overview
     document.getElementById('alertId').textContent = data.alert.alert_id;
@@ -135,7 +152,7 @@ function renderFeatureChart(features) {
     const labels = topFeatures.map(f => f.human_readable_name);
     const values = topFeatures.map(f => Math.abs(f.impact_score));
     const colors = topFeatures.map(f =>
-        f.direction === 'increases_risk' ? 'rgba(220, 53, 69, 0.7)' : 'rgba(40, 167, 69, 0.7)'
+        f.direction === 'increases_risk' ? 'rgba(255, 0, 84, 0.8)' : 'rgba(6, 255, 165, 0.8)'
     );
 
     featureChart = new Chart(ctx, {
@@ -146,25 +163,49 @@ function renderFeatureChart(features) {
                 label: 'Impact Score',
                 data: values,
                 backgroundColor: colors,
-                borderColor: colors.map(c => c.replace('0.7', '1')),
-                borderWidth: 1
+                borderColor: colors.map(c => c.replace('0.8', '1')),
+                borderWidth: 2,
+                borderRadius: 8
             }]
         },
         options: {
             indexAxis: 'y',
             responsive: true,
             maintainAspectRatio: true,
+            animation: {
+                duration: 1500,
+                easing: 'easeInOutQuart'
+            },
             scales: {
                 x: {
                     beginAtZero: true,
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.05)',
+                        borderColor: 'rgba(0, 245, 255, 0.3)'
+                    },
+                    ticks: {
+                        color: 'rgba(255, 255, 255, 0.7)'
+                    },
                     title: {
                         display: true,
-                        text: 'Absolute Impact Score'
+                        text: 'Absolute Impact Score',
+                        color: 'rgba(0, 245, 255, 0.9)',
+                        font: {
+                            size: 13,
+                            weight: 'bold'
+                        }
                     }
                 },
                 y: {
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.05)'
+                    },
                     ticks: {
-                        autoSkip: false
+                        autoSkip: false,
+                        color: 'rgba(255, 255, 255, 0.8)',
+                        font: {
+                            size: 11
+                        }
                     }
                 }
             },
@@ -173,6 +214,13 @@ function renderFeatureChart(features) {
                     display: false
                 },
                 tooltip: {
+                    backgroundColor: 'rgba(10, 14, 39, 0.95)',
+                    titleColor: 'rgba(0, 245, 255, 1)',
+                    bodyColor: 'rgba(255, 255, 255, 0.9)',
+                    borderColor: 'rgba(0, 245, 255, 0.5)',
+                    borderWidth: 2,
+                    padding: 12,
+                    displayColors: true,
                     callbacks: {
                         label: function(context) {
                             const feature = topFeatures[context.dataIndex];

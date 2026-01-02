@@ -44,6 +44,7 @@ PROCESSED_DATA_DIR.mkdir(parents=True, exist_ok=True)
 ALERTS_CSV_PATH = RAW_DATA_DIR / "alerts.csv"
 PROCESSED_FEATURES_PATH = PROCESSED_DATA_DIR / "features.csv"
 FEATURE_METADATA_PATH = PROCESSED_DATA_DIR / "feature_metadata.pkl"
+PROCESSED_ALERTS_PATH = PROCESSED_DATA_DIR / "processed_alerts.txt"
 
 # Model file paths
 MODEL_PATH = MODEL_DIR / "random_forest_model.pkl"
@@ -102,4 +103,43 @@ LABEL_COLORS = {
     LABEL_BENIGN: "#28a745",      # Green
     LABEL_SUSPICIOUS: "#ffc107",  # Yellow
     LABEL_MALICIOUS: "#dc3545"    # Red
+}
+
+# Real-Time Processing Configuration
+REALTIME_CHECK_INTERVAL = int(os.getenv("REALTIME_CHECK_INTERVAL", "60"))  # seconds
+REALTIME_ENABLED = os.getenv("REALTIME_ENABLED", "False").lower() == "true"
+
+# Notification Configuration
+SMTP_SERVER = os.getenv("SMTP_SERVER", "smtp.gmail.com")
+SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
+SMTP_USERNAME = os.getenv("SMTP_USERNAME", "")
+SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "")
+FROM_EMAIL = os.getenv("FROM_EMAIL", "security-ai@yourcompany.com")
+ALERT_EMAIL_RECIPIENTS = os.getenv("ALERT_EMAIL_RECIPIENTS", "soc-team@yourcompany.com")
+
+# Slack Configuration
+SLACK_WEBHOOK_URL = os.getenv("SLACK_WEBHOOK_URL", "")
+SLACK_ENABLED = bool(SLACK_WEBHOOK_URL)
+
+# Microsoft Teams Configuration
+TEAMS_WEBHOOK_URL = os.getenv("TEAMS_WEBHOOK_URL", "")
+TEAMS_ENABLED = bool(TEAMS_WEBHOOK_URL)
+
+# Alert Routing Rules
+NOTIFICATION_RULES = {
+    LABEL_MALICIOUS: {
+        "channels": ["email", "slack", "teams"],
+        "priority": "critical",
+        "immediate": True
+    },
+    LABEL_SUSPICIOUS: {
+        "channels": ["slack", "email"],
+        "priority": "warning",
+        "immediate": False
+    },
+    LABEL_BENIGN: {
+        "channels": [],  # No notifications
+        "priority": "info",
+        "immediate": False
+    }
 }
