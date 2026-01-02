@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Security Decision Explainer - SOC Dashboard</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>AI Security Decision Explainer</h1>
+            <p class="subtitle">Trust-First AI for SOC Environments</p>
+        </header>
+
+        <!-- Alert Selection -->
+        <section class="selection-panel">
+            <div class="form-group">
+                <label for="alertSelect">Select Security Alert:</label>
+                <select id="alertSelect" class="form-control">
+                    <option value="">Loading alerts...</option>
+                </select>
+                <button id="analyzeBtn" class="btn btn-primary" disabled>Analyze Alert</button>
+                <span id="loadingSpinner" class="spinner" style="display: none;">Analyzing...</span>
+            </div>
+        </section>
+
+        <!-- Results Panel (Hidden until analysis) -->
+        <div id="resultsPanel" style="display: none;">
+
+            <!-- Alert Overview -->
+            <section class="card">
+                <h2>Alert Overview</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="label">Alert ID:</span>
+                        <span id="alertId" class="value"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Timestamp:</span>
+                        <span id="alertTimestamp" class="value"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Source IP:</span>
+                        <span id="sourceIp" class="value"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Source Country:</span>
+                        <span id="sourceCountry" class="value"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Destination:</span>
+                        <span id="destination" class="value"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Protocol:</span>
+                        <span id="protocol" class="value"></span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI Verdict -->
+            <section class="card verdict-card">
+                <h2>AI Security Verdict</h2>
+                <div class="verdict-container">
+                    <div id="verdictBadge" class="verdict-badge"></div>
+                    <div class="confidence-container">
+                        <div class="confidence-label">Confidence:</div>
+                        <div id="confidenceBar" class="confidence-bar">
+                            <div id="confidenceLevel" class="confidence-level"></div>
+                        </div>
+                        <div id="confidenceText" class="confidence-text"></div>
+                    </div>
+                </div>
+                <div class="probability-grid">
+                    <div class="prob-item">
+                        <span class="prob-label">Benign:</span>
+                        <span id="probBenign" class="prob-value"></span>
+                    </div>
+                    <div class="prob-item">
+                        <span class="prob-label">Suspicious:</span>
+                        <span id="probSuspicious" class="prob-value"></span>
+                    </div>
+                    <div class="prob-item">
+                        <span class="prob-label">Malicious:</span>
+                        <span id="probMalicious" class="prob-value"></span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Explanation -->
+            <section class="card explanation-card">
+                <h2>Security Analyst Explanation</h2>
+                <div id="explanationText" class="explanation-text"></div>
+                <div class="action-recommendation">
+                    <strong>Recommended Action:</strong>
+                    <span id="recommendedAction" class="action-badge"></span>
+                </div>
+            </section>
+
+            <!-- Evidence - Feature Importance -->
+            <section class="card">
+                <h2>Evidence - Feature Importance</h2>
+                <p class="help-text">Top factors contributing to this decision (via SHAP analysis):</p>
+                <canvas id="featureChart"></canvas>
+            </section>
+
+            <!-- Detailed Features (Expandable) -->
+            <section class="card">
+                <h2>Detailed Alert Features</h2>
+                <button id="toggleDetails" class="btn btn-secondary">Show All Details</button>
+                <div id="detailsTable" style="display: none;">
+                    <table class="details-table">
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Value</th>
+                                <th>Impact</th>
+                                <th>Contribution</th>
+                            </tr>
+                        </thead>
+                        <tbody id="detailsTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- True Label (For Validation) -->
+            <section class="card validation-card">
+                <h3>Validation</h3>
+                <p class="help-text">This is synthetic data. The true label is:</p>
+                <div id="trueLabel" class="true-label-badge"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="/static/js/dashboard.js"></script>
+</body>
+</html>
